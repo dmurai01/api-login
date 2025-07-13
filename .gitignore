@@ -1,0 +1,15 @@
+# Node modules
+node_modules/
+
+# Arquivos de mock e dados temporários
+src/models/users.json
+
+# Logs
+*.log
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Outros
+.env 
