@@ -56,10 +56,11 @@ O projeto utiliza as seguintes dependências para testes:
 - **Mocha**: Framework de testes.
 - **Chai**: Biblioteca de asserções.
 - **Supertest**: Testes de integração para rotas HTTP.
+- **Mochawesome**: Geração de relatórios em HTML para os testes Mocha.
 
 Para instalar as dependências de teste, execute:
 ```bash
-npm install --save-dev mocha chai supertest
+npm install --save-dev mocha chai supertest mochawesome
 ```
 
 Para rodar os testes:

@@ -4,6 +4,9 @@ node_modules/
 # Arquivos de mock e dados temporários
 src/models/users.json
 
+# Arquivos de relatóro Mochawesome
+mochawesome-report/
+
 # Logs
 *.log
 
