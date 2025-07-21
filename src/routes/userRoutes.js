@@ -20,7 +20,7 @@ function authMiddleware(req, res, next) {
 
 router.post('/register', userController.register);
 router.post('/login', userController.login);
-router.put('/update', authMiddleware, userController.update);
+router.patch('/update', authMiddleware, userController.update);
 router.post('/recover', userController.recoverPassword);
 router.get('/', userController.getAllUsers);
 
