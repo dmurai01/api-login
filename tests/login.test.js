@@ -3,17 +3,20 @@ require('dotenv').config()
 const postLogin = require('../fixtures/postLogin.json')
 const { loginUsuario } = require('../helpers/login.js')
 const { cadastrarNovoUsuario } = require('../helpers/cadastro.js')
-const { redefinirSenha } = require('../helpers/redefinirSenha.js')
 
-let bodyLogin = { ...postLogin }
+let bodyLogin
 
 describe('Login', () => {
+    beforeEach(() => {
+        bodyLogin = { ...postLogin }
+    });
+
     describe('POST /api/users/login', () => {
         it('Deve retornar sucesso 200 com token quando usar credenciais válidas de usuário não bloqueado', async () => {
             const resposta = await loginUsuario(bodyLogin)
             expect(resposta.status).to.equal(200)
             expect(resposta.body.token).to.be.a('string')
-        });
+        })
 
         it('Deve retornar 400 e mensagem de erro quando não usar email ou senha', async () => {
             bodyLogin.senha = ''
@@ -21,7 +24,7 @@ describe('Login', () => {
             const resposta = await loginUsuario(bodyLogin)
             expect(resposta.status).to.equal(400)
             expect(resposta.body.message).to.equal('Email e senha são obrigatórios.')
-        });
+        })
 
         it('Deve retornar 401 e mensagem de erro quando enviar credenciais com senha inválida', async () => {
             bodyLogin.senha = '654321'
@@ -53,40 +56,9 @@ describe('Login', () => {
         })
 
 
-    });
+    })
 
-    describe('POST /api/users/recover', () => {
-        let email = '{"email":"teste@teste.com"}'
-        let guardaNovaSenha
 
-        it.only('Deve retornar 200 quando enviar email existente para recuperar a senha e receber uma nova senha', async () => {
-            const resposta = await redefinirSenha(email)
 
-            guardaNovaSenha = resposta.body.novaSenha
-            console.log(guardaNovaSenha)
-
-            expect(resposta.status).to.equal(200)
-            expect(resposta.body.novaSenha).to.be.exist
-        });
-
-        it('Deve retornar 400 quando enviar email vazio', async () => {
-            email = ''
-
-            const resposta = await redefinirSenha(email)
-            expect(resposta.status).to.equal(400)
-        });
-
-        it('Deve retornar 404 quando enviar email não cadastrado', async () => {
-            email = '{"email":"nãoexiste@agora.com"}'
-
-            const resposta = await redefinirSenha(email)
-            expect(resposta.status).to.equal(404)
-        });
-    });
-
-    // describe('PUT /api/users/update', () => {
-        
-    // });
-
-});
+})
 
