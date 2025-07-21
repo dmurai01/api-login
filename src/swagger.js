@@ -1,3 +1,5 @@
+const { patch } = require("./routes/userRoutes");
+
 module.exports = {
   openapi: '3.0.0',
   info: {
@@ -90,7 +92,7 @@ module.exports = {
       }
     },
     '/api/users/update': {
-      put: {
+      patch: {
         summary: 'Alterar cadastro do usuário (autenticado)',
         security: [{ bearerAuth: [] }],
         description: 'Requer autenticação JWT via header Authorization: Bearer <token>. Só é possível alterar nome e/ou senha.',
