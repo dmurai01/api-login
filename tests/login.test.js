@@ -1,4 +1,3 @@
-const request = require('supertest')
 const { expect } = require('chai')
 require('dotenv').config()
 const postLogin = require('../fixtures/postLogin.json')
@@ -41,9 +40,8 @@ describe('Login', () => {
             for (let i = 0; i < 3; i++) {
                 bodyLogin.email = email
                 bodyLogin.senha = '000000'
-                await request(process.env.BASE_URL)
-                    .post('/api/users/login')
-                    .send(bodyLogin);
+
+                await loginUsuario(bodyLogin)
             }
 
             bodyLogin.senha = '123456'
@@ -54,14 +52,19 @@ describe('Login', () => {
             expect(resposta.body.message).to.equal('Usuário bloqueado por excesso de tentativas inválidas.');
         })
 
-        
+
     });
 
     describe('POST /api/users/recover', () => {
         let email = '{"email":"teste@teste.com"}'
+        let guardaNovaSenha
 
-        it('Deve retornar 200 quando enviar email existente para recuperar a senha e receber uma nova senha', async () => {
+        it.only('Deve retornar 200 quando enviar email existente para recuperar a senha e receber uma nova senha', async () => {
             const resposta = await redefinirSenha(email)
+
+            guardaNovaSenha = resposta.body.novaSenha
+            console.log(guardaNovaSenha)
+
             expect(resposta.status).to.equal(200)
             expect(resposta.body.novaSenha).to.be.exist
         });
@@ -73,13 +76,17 @@ describe('Login', () => {
             expect(resposta.status).to.equal(400)
         });
 
-        it.only('Deve retornar 404 quando enviar email não cadastrado', async () => {
+        it('Deve retornar 404 quando enviar email não cadastrado', async () => {
             email = '{"email":"nãoexiste@agora.com"}'
 
             const resposta = await redefinirSenha(email)
             expect(resposta.status).to.equal(404)
         });
     });
+
+    // describe('PUT /api/users/update', () => {
+        
+    // });
 
 });
 
