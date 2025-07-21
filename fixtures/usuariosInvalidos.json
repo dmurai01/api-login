@@ -1,0 +1,14 @@
+{
+  "emailNaoRegistrado": {
+    "email": "naoexiste@teste.com",
+    "senha": "123456"
+  },
+  "senhaIncorreta": {
+    "email": "usuarioexistente@teste.com",
+    "senha": "senhaerrada"
+  },
+  "faltandoCampos": {
+    "email": "",
+    "senha": ""
+  }
+}
