@@ -1,5 +1,6 @@
 
 const request = require('supertest')
+require('dotenv').config()
 
 const cadastrarNovoUsuario = async (nome, email, senha) => {
 
@@ -11,8 +12,7 @@ const cadastrarNovoUsuario = async (nome, email, senha) => {
             'senha': senha
         });
     
-    return resposta.status
-
+    return resposta
 }
 
 module.exports = {
