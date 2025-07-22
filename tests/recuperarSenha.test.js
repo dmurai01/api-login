@@ -1,10 +1,19 @@
 const { expect } = require('chai')
 require('dotenv').config()
-const { recuperarSenha } = require('../helpers/recuperarSenha.js')
+const { recuperarSenha } = require('../helpers/recuperarSenha.js');
+const { novoUsuarioValido } = require('../helpers/cadastroNovoValido.js');
+
+let usuario
+let email
 
 describe('Esqueci Minha Senha', () => {
+
+    beforeEach(async () => {
+        usuario = await novoUsuarioValido()
+        email = `{"email":"${usuario.email}"}`
+    });
+
     describe('POST /api/users/recover', () => {
-        let email = '{"email":"teste@teste.com"}'
 
         it('Deve retornar 200 quando enviar email existente para recuperar a senha e receber uma nova senha', async () => {
             const resposta = await recuperarSenha(email)

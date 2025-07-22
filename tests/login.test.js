@@ -1,55 +1,51 @@
 const { expect } = require('chai')
 require('dotenv').config()
-const postLogin = require('../fixtures/postLogin.json')
 const { loginUsuario } = require('../helpers/login.js')
-const { cadastrarNovoUsuario } = require('../helpers/cadastro.js')
+const { novoUsuarioValido } = require('../helpers/cadastroNovoValido.js')
 
-let bodyLogin
+let usuario
 
 describe('Login', () => {
-    beforeEach(() => {
-        bodyLogin = { ...postLogin }
+    beforeEach(async () => {
+        usuario = await novoUsuarioValido()
     });
 
     describe('POST /api/users/login', () => {
         it('Deve retornar sucesso 200 com token quando usar credenciais válidas de usuário não bloqueado', async () => {
-            const resposta = await loginUsuario(bodyLogin)
+            const resposta = await loginUsuario(usuario)
+
             expect(resposta.status).to.equal(200)
             expect(resposta.body.token).to.be.a('string')
         })
 
         it('Deve retornar 400 e mensagem de erro quando não usar email ou senha', async () => {
-            bodyLogin.senha = ''
+            usuario.senha = ''
+            const resposta = await loginUsuario(usuario)
 
-            const resposta = await loginUsuario(bodyLogin)
             expect(resposta.status).to.equal(400)
             expect(resposta.body.message).to.equal('Email e senha são obrigatórios.')
         })
 
         it('Deve retornar 401 e mensagem de erro quando enviar credenciais com senha inválida', async () => {
-            bodyLogin.senha = '654321'
+            usuario.senha = '654321'
+            const resposta = await loginUsuario(usuario)
 
-            const resposta = await loginUsuario(bodyLogin)
             expect(resposta.status).to.equal(401)
             expect(resposta.body.message).to.equal('Credenciais inválidas.')
         })
 
         it('Deve retornar 403 e mensagem de erro quando enviar credenciais incorretas 3 e bloquear usuário', async () => {
-            const nome = `Usuário Bloqueado ${Math.floor(Math.random() * 1000)}`
-            const email = `bloq${Math.floor(Math.random() * 1000000)}@teste.com`
-
-            await cadastrarNovoUsuario(nome, email, '123456')
 
             for (let i = 0; i < 3; i++) {
-                bodyLogin.email = email
-                bodyLogin.senha = '000000'
+                usuario.email = usuario.email
+                usuario.senha = '000000'
 
-                await loginUsuario(bodyLogin)
+                await loginUsuario(usuario)
             }
 
-            bodyLogin.senha = '123456'
+            usuario.senha = '123456'
 
-            const resposta = await loginUsuario(bodyLogin)
+            const resposta = await loginUsuario(usuario)
 
             expect(resposta.status).to.equal(403);
             expect(resposta.body.message).to.equal('Usuário bloqueado por excesso de tentativas inválidas.');
