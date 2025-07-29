@@ -86,4 +86,24 @@ Acesse a documentação interativa em: [http://localhost:3000/api-docs](http://l
 
 ---
 
+## CORS (Cross-Origin Resource Sharing)
+
+Para permitir que aplicações frontend (como React, Angular, etc.) possam consumir esta API mesmo hospedadas em domínios diferentes, foi adicionado o middleware [cors](https://www.npmjs.com/package/cors) no início do arquivo `src/app.js`.
+
+**Exemplo de configuração utilizada:**
+
+```js
+const cors = require('cors');
+
+app.use(cors({
+  // origin: 'http://192.168.1.103:4000', // ou use '*' para todas as origens (não recomendado para produção)
+  origin: '*',
+  credentials: true // se precisar enviar cookies/autenticação
+}));
+```
+
+> **Nota:** Para ambientes de produção, recomenda-se especificar o domínio do frontend em vez de usar `'*'` para maior segurança.
+
+---
+
 **Atenção:** Este projeto não utiliza banco de dados real. Os dados dos usuários são armazenados em um arquivo mock (`src/models/userMock.js`). O arquivo `src/models/users.json` será criado automaticamente na primeira vez que um usuário for cadastrado. Os dados persistem entre reinicializações do servidor, mas podem ser perdidos se o arquivo for removido ou editado manualmente.
