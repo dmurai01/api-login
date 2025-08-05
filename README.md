@@ -6,20 +6,33 @@ API REST para gestão de login de usuários, desenvolvida em Node.js com Express
 
 ```
 api-login/
-├── src/
+├── fixtures/              # Dados de entrada simulados (ex: postLogin.json)
+├── helpers/               # Funções auxiliares para testes automatizados
+│   ├── atualizarSenha.js
+│   ├── cadastro.js
+│   ├── cadastroNovoValido.js
+│   ├── login.js
+│   └── recuperarSenha.js
+├── src/                   # Código principal da API
 │   ├── controllers/
-│   ├── middlewares/
+│   │   └── userController.js
 │   ├── models/
 │   │   ├── userMock.js
 │   │   └── users.json
 │   ├── routes/
-│   ├── services/
-│   └── app.js
-├── tests/
-│   ├── integration/
-│   └── unit/
+│   │   └── userRoutes.js
+│   ├── app.js
+│   ├── swagger.js
+│   └── swagger.json
+├── tests/                 # Scripts de teste com Mocha/Chai
+│   ├── atualizarSenha.test.js
+│   ├── cadastroUsuario.test.js
+│   ├── login.test.js
+│   └── recuperarSenha.test.js
 ├── .env
+├── .gitignore
 ├── package.json
+├── package-lock.json
 └── README.md
 ```
 
