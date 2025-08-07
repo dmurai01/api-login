@@ -78,6 +78,13 @@ exports.update = async (req, res) => {
   if (novoNome) {
     user.nome = novoNome;
   }
+  if (!novaSenha) {
+    return res.status(400).json({ message: 'Nova senha é obrigatória.' });
+  }
+  if (novaSenha.length < 6) {
+    return res.status(400).json({ message: 'A nova senha deve ter pelo menos 6 caracteres.' });
+  }
+  
   if (novaSenha) {
     user.senha = await bcrypt.hash(novaSenha, 10);
   }
